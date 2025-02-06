@@ -101,6 +101,10 @@
       cava
       openconnect_openssl
       rsync
+      steam-run
+      burpsuite
+      wireshark
+      nmap
 ]) ++ [
 	  python-packages
   ];
