@@ -54,6 +54,7 @@
     hypridle # requires unstable channel
     imagemagick 
     inxi
+    # iwgtk
     jq
     kitty
     libsForQt5.qtstyleplugin-kvantum #kvantum
@@ -83,8 +84,8 @@
     yt-dlp
 
     # My packages
+      cura-appimage
       pixi
-      spotify-qt
 #       julia_110
       zoom-us
       slack
@@ -101,6 +102,15 @@
       cava
       openconnect_openssl
       rsync
+      steam-run
+      burpsuite
+      wireshark
+      nmap
+      tmux 
+      ranger
+      mosh
+      libreoffice
+      feh
 ]) ++ [
 	  python-packages
   ];
