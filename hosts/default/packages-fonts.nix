@@ -87,7 +87,7 @@
     	code-cursor
     	cura-appimage
     	feh
-	hugo
+		hugo
     	julia_110
     	libreoffice
     	librewolf
@@ -138,3 +138,4 @@
         terminus_font
      	];
       }
+
