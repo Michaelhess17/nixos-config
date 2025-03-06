@@ -38,7 +38,7 @@ in
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
     powerManagement.finegrained = false;
       
-    #dynamicBoost.enable = true; # Dynamic Boost
+    dynamicBoost.enable = true; # Dynamic Boost
 
     nvidiaPersistenced = false;
 
