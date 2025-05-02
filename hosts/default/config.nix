@@ -250,7 +250,6 @@
     # Expose LLM to local port (11434)
     open-webui.enable = true;
 
-
     # System options mainly provided by JaKooLit
     greetd = {
       enable = true;

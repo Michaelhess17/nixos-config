@@ -40,7 +40,7 @@
         glib #for gsettings to work
         gsettings-qt
         git
-	git-lfs
+	    git-lfs
         killall  
         libappindicator
         libnotify
@@ -102,33 +102,32 @@
     	cifs-utils
     	code-cursor
     	cura-appimage
-	# feh
-	hugo
+	    # feh
+	    hugo
     	# (julia_110.withPackages ["CUDA" "Plots"])
-	kaggle
     	libreoffice
     	librewolf
     	mosh
     	nodejs_22
     	openconnect_openssl
-	openvpn
+	    openvpn
     	pixi
     	python312
-	qbittorrent
+	    qbittorrent
     	ranger
     	realvnc-vnc-viewer
     	rsync
     	slack
     	steam-run
-	tex-packages
+	    tex-packages
     	thunderbird
     	tmux
-	typst
-	qimgv
-	wireguard-tools
+	    typst
+	    qimgv
+	    wireguard-tools
     	xfce.thunar
     	zoom-us
-	zotero
+	    zotero
         
         # Penetration testing
         aircrack-ng
