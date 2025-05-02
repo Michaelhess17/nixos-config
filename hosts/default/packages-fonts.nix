@@ -137,6 +137,7 @@
         gobuster
         hashcat
         hydra
+	iptables
         metasploit
     	nmap
         proxychains
