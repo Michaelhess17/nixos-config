@@ -14,13 +14,14 @@
     ./hardware.nix
     ./users.nix
     ./packages-fonts.nix
-    ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
     ../../modules/nvidia-prime-drivers.nix
     ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
+    
   ];
+  
 
   # BOOT related stuff
   boot = {
@@ -33,6 +34,7 @@
       "modprobe.blacklist=sp5100_tco" #watchdog for AMD
       "modprobe.blacklist=iTCO_wdt" #watchdog for Intel
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      "nvidia.NVreg_TemporaryFilePath=1" # needed for suspend possibly
  	  ];
 
     # This is for OBS Virtual Cam Support
@@ -41,8 +43,17 @@
     
     initrd = { 
       availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+      systemd.enable = true;
       kernelModules = [ ];
     };
+
+    resumeDevice = "";
+    blacklistedKernelModules = lib.mkForce [
+	"nvidia"
+	"nvidia_modeset"
+	"nvidia_uvm"
+	"nvidia_drm"
+    ];
 
     # Needed For Some Steam Games
     #kernel.sysctl = {
@@ -59,22 +70,7 @@
   	  };
 
     loader.timeout = 3;
-  			
-    # Bootloader GRUB
-    #loader.grub = {
-	    #enable = true;
-	    #  devices = [ "nodev" ];
-	    #  efiSupport = true;
-      #  gfxmodeBios = "auto";
-	    #  memtest86.enable = true;
-	    #  extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
-	    #  configurationName = "${host}";
-  	  #	 };
-
-    # Bootloader GRUB theme, configure below
-
-    ## -end of BOOTLOADERS----- ##
-  
+      
     # Make /tmp a tmpfs
     tmp = {
       useTmpfs = false;
@@ -93,72 +89,26 @@
     
     plymouth.enable = true;
   };
-
-  # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
-  #distro-grub-themes = {
-  #  enable = true;
-  #  theme = "nixos";
-  #};
-
-
-  # Extra Module Options
-  /*drivers.amdgpu.enable = false;
-  drivers.intel.enable = true;
-  */
+ 
+  # Nvidia driver enable
   drivers.nvidia.enable = true;
-  /*drivers.nvidia-prime = {
-    enable = true;
-    intelBusID = "";
-    nvidiaBusID = "";
-  };*/
-
-      hardware.nvidia = {
-
-      # Modesetting is required.
-      modesetting.enable = true;
-
-      # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-      # Enable this if you have graphical corruption issues or application crashes after waking
-      # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
-      # of just the bare essentials.
-      powerManagement.enable = true;
-
-      # Fine-grained power management. Turns off GPU when not in use.
-      # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-      powerManagement.finegrained = false;
-
-      # Use the NVidia open source kernel module (not to be confused with the
-      # independent third-party "nouveau" open source driver).
-      # Support is limited to the Turing and later architectures. Full list of
-      # supported GPUs is at:
-      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
-      # Only available from driver 515.43.04+
-      # Currently alpha-quality/buggy, so false is currently the recommended setting.
-      open = false;
-
-      # Enable the Nvidia settings menu,
-      # accessible via `nvidia-settings`.
-      nvidiaSettings = true;
-
-      # Optionally, you may need to select the appropriate driver version for your specific GPU.
-      package = config.boot.kernelPackages.nvidiaPackages.production;
-    };
-
-    hardware.nvidia.prime = {
-          offload = {
-              enable = true;
-              enableOffloadCmd = true;
-          };
-          # Make sure to use the correct Bus ID values for your system!
-          intelBusId = "PCI:0:2:0";
-          nvidiaBusId = "PCI:1:0:0";
-      };
 
   vm.guest-services.enable = false;
   local.hardware-clock.enable = false;
 
   # networking
   networking.networkmanager.enable = true;
+  networking.extraHosts = 
+    ''
+    '';
+  # networking.wireless.iwd = {
+  #   enable = true;
+  #   settings = {
+  #     IPv6.Enabled = true;
+  #     Settings.AutoConnect = true;
+  #   };
+  # };
+  # networking.networkmanager.wifi.backend = "iwd";
   networking.hostName = "${host}";
   networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
 
@@ -182,6 +132,20 @@
 
   nixpkgs.config.allowUnfree = true;
   
+  security.sudo.extraRules = [{
+    users = [ "michael" ];
+    commands = [
+    {
+      command = "/run/current-system/sw/bin/nixos-rebuild switch";
+      options = [ "NOPASSWD" ];
+    }
+    {
+      command = "/run/wrappers/bin/ip netns exec vpnns *";
+      options = [ "NOPASSWD" ];
+    }
+   ];
+  }];
+
   programs = {
 	  hyprland = {
       enable = true;
@@ -192,21 +156,22 @@
 
 	
 	  waybar.enable = true;
-	  hyprlock.enable = true;
-	  firefox.enable = true;
-	  git.enable = true;
-    nm-applet.indicator = true;
-    #neovim.enable = true;
+	  hyprlock = {
+	  	enable = true;
+#		settings = {
+#			general = {ignore_empty_input = true;};
+#		background = {path = "home/michael/Pictures/wallpapers/astronaut.png";};
+#		};
+	  };
+	  # firefox = {
+	  # 	enable = true;
+	  # };
+	  git = {
+	      enable = true;
+	      lfs.enable = true;
+	  };
 
-	  /*thunar.enable = true;
-	  thunar.plugins = with pkgs.xfce; [
-		  exo
-		  mousepad
-		  thunar-archive-plugin
-		  thunar-volman
-		  tumbler
-  	  ];*/
-	
+    nm-applet.indicator = true; 	
     virt-manager.enable = false;
     
     steam = {
@@ -226,9 +191,12 @@
       enable = true;
       enableSSHSupport = true;
     };
-	
-  };
-
+    
+    
+    # Allow persistence of dev shells
+    direnv.enable = true;
+    nix-ld.enable = true;
+};
   users = {
     mutableUsers = true;
   };
@@ -259,6 +227,11 @@
       };
     };
 
+    logind = {
+	extraConfig = "HandlePowerKey=suspend";
+	lidSwitch = "suspend";
+    };    
+    
     # Asusd for Asus laptops
     asusd = {
       enable = true;
@@ -268,16 +241,17 @@
       enable = true;
     };
     
-	# Run LLMs locally
-	ollama = {
-		enable = true;
-		acceleration = "cuda";
-	};
+    # Run LLMs locally
+    ollama = {
+	enable = true;
+	acceleration = "cuda";
+    };
 	
-	# Expose LLM to local port (11434)
-	open-webui.enable = true;
+    # Expose LLM to local port (11434)
+    open-webui.enable = true;
 
-	# System options mainly provided by JaKooLit
+
+    # System options mainly provided by JaKooLit
     greetd = {
       enable = true;
       vt = 3;
@@ -321,7 +295,7 @@
     nfs.server.enable = false;
   
     openssh.enable = true;
-    flatpak.enable = false;
+    flatpak.enable = true;
 	
   	blueman.enable = true;
   	
@@ -358,12 +332,17 @@
 
   };
   
-  systemd.services.flatpak-repo = {
-    path = [ pkgs.flatpak ];
-    script = ''
-      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    '';
-  };
+  systemd.services = {
+    flatpak-repo = {
+        path = [ pkgs.flatpak ];
+        script = ''
+          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        '';
+      };
+        systemd-logind.environment = {
+	  SYSTEMD_BYPASS_HIBERNATION_MEMORY_CHECK = "1";
+        };
+    };
 
   # zram
   zramSwap = {
@@ -471,7 +450,7 @@
     dockerCompat = false;
     defaultNetwork.settings.dns_enabled = false;
   };
-  virtualisation.vmware.host.enable = true;
+  # virtualisation.vmware.host.enable = true;
 
   # OpenGL
   hardware.graphics = {

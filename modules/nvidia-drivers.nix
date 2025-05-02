@@ -38,9 +38,9 @@ in
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
     powerManagement.finegrained = false;
       
-    #dynamicBoost.enable = true; # Dynamic Boost
+    dynamicBoost.enable = lib.mkForce true; # Dynamic Boost
 
-    nvidiaPersistenced = false;
+    # nvidiaPersistenced = true;
 
     # Use the NVidia open source kernel module (not to be confused with the
     # independent third-party "nouveau" open source driver).
@@ -58,6 +58,15 @@ in
       
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.production;
+
+    prime = {
+	offload = {
+		enable = true;
+		enableOffloadCmd = true;
+	};
+	nvidiaBusId = "PCI:1:0:0";
+	intelBusId = "PCI:0:2:0";
+    };
     };
   };
 }
