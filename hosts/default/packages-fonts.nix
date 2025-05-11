@@ -24,6 +24,7 @@
 	    amsmath
 	    siunitx
 	    cm-super
+	    beamer
     	    dvipng;
 	};
     in {
@@ -40,7 +41,7 @@
         glib #for gsettings to work
         gsettings-qt
         git
-	    git-lfs
+	git-lfs
         killall  
         libappindicator
         libnotify
@@ -64,6 +65,7 @@
         gnome-system-monitor
         grim
         gtk-engine-murrine #for gtk themes
+        hicolor-icon-theme # to let rofi see hicolor icons
         hyprcursor # requires unstable channel
         hypridle # requires unstable channel
         imagemagick 
@@ -84,6 +86,7 @@
         polkit_gnome
         pyprland
         rofi-wayland
+        sddm-astronaut
         slurp
         swappy
         swaynotificationcenter
@@ -110,24 +113,24 @@
     	mosh
     	nodejs_22
     	openconnect_openssl
-	    openvpn
+	openvpn
     	pixi
     	python312
-	    qbittorrent
+	qbittorrent
     	ranger
     	realvnc-vnc-viewer
     	rsync
     	slack
     	steam-run
-	    tex-packages
+	tex-packages
     	thunderbird
     	tmux
-	    typst
-	    qimgv
-	    wireguard-tools
+	typst
+	qimgv
+	wireguard-tools
     	xfce.thunar
     	zoom-us
-	    zotero
+	zotero
         
         # Penetration testing
         aircrack-ng

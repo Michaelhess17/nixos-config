@@ -207,11 +207,16 @@
     wlr.enable = false;
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-hyprland
     ];
-    configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal
-    ];
+    # configPackages = [
+    #  pkgs.xdg-desktop-portal-gtk
+    #  pkgs.xdg-desktop-portal-hyprland
+    #  pkgs.xdg-desktop-portal
+    # ];
+    config.hyprland = {
+      "org.freedesktop.impl.portal.ScreenCast" = "hyprland";
+    };
   };
   # Supergfxd for Asus laptops
   systemd.services.supergfxcd = {
@@ -219,12 +224,34 @@
   };
   # Services to start
   services = {
+    printing = {
+      enable = true;
+      drivers = [ pkgs.hplip ];
+    };
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+    displayManager.sddm = {
+      enable = true;
+      package = pkgs.kdePackages.sddm; # qt6 version
+      extraPackages = [pkgs.sddm-astronaut];
+      wayland.enable = true;
+      theme = "sddm-astronaut-theme";
+      settings = {
+        GreeterEnvironment = {
+          QT_SCREEN_SCALE_FACTORS="2.666";
+          QT_FONT_DPI="192";
+        };
+      };
+    };
     xserver = {
-      enable = false;
+      enable = true;
       xkb = {
         layout = "${keyboardLayout}";
         variant = "";
-      };
+      }; 
     };
 
     logind = {
@@ -251,16 +278,16 @@
     open-webui.enable = true;
 
     # System options mainly provided by JaKooLit
-    greetd = {
-      enable = true;
-      vt = 3;
-      settings = {
-        default_session = {
-          user = username;
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --theme 'border=gray;text=gray;prompt=green;time=gray;action=blue;button=gray;container=black;input=green' --user-menu --asterisks --cmd Hyprland"; # start Hyprland with a TUI login manager
-        };
-      };
-    };
+    # greetd = {
+    #   enable = true;
+    #   vt = 3;
+    #   settings = {
+    #     default_session = {
+    #       user = username;
+    #       command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --theme 'border=gray;text=gray;prompt=green;time=gray;action=blue;button=gray;container=black;input=green' --user-menu --asterisks --cmd Hyprland"; # start Hyprland with a TUI login manager
+    #     };
+    #   };
+    # };
 
     smartd = {
       enable = false;
