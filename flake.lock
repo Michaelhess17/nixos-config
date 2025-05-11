@@ -57,6 +57,22 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1746992382,
+        "narHash": "sha256-Ir7Sa0jY3FNmYIAmjL2HcfIHOOquv/8ND71sbPf01kw=",
+        "owner": "michaelhess17",
+        "repo": "nixos-hardware",
+        "rev": "0d3ca7531030e2a405e6e7f885cc07681cac6aba",
+        "type": "github"
+      },
+      "original": {
+        "owner": "michaelhess17",
+        "ref": "master",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1725634671,
@@ -91,11 +107,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1744098102,
-        "narHash": "sha256-tzCdyIJj9AjysC3OuKA+tMD/kDEDAF9mICPDU7ix0JA=",
+        "lastModified": 1746663147,
+        "narHash": "sha256-Ua0drDHawlzNqJnclTJGf87dBmaO/tn7iZ+TCkTRpRc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c8cd81426f45942bb2906d5ed2fe21d2f19d95b7",
+        "rev": "dda3dcd3fe03e991015e9a74b22d35950f264a54",
         "type": "github"
       },
       "original": {
@@ -108,6 +124,7 @@
       "inputs": {
         "ags": "ags",
         "distro-grub-themes": "distro-grub-themes",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3"
       }
     },
