@@ -7,6 +7,7 @@
   	nixpkgs.url = "nixpkgs/nixos-unstable";
 	#hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
 	distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+	nixos-hardware.url = "github:michaelhess17/nixos-hardware/master";
 	ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1
   	};
 
@@ -34,11 +35,11 @@
 			inherit username;
 			inherit host;
 			};
-	   		modules = [ 
-				./hosts/${host}/config.nix
-				inputs.distro-grub-themes.nixosModules.${system}.default
-				];
-			};
+		modules = [ 
+			./hosts/${host}/config.nix
+			inputs.distro-grub-themes.nixosModules.${system}.default
+			inputs.nixos-hardware.nixosModules.asus-rog-strix-g533zw
+			]; };
 		};
-	};
+     };
 }
