@@ -1,9 +1,5 @@
-# 💫 https://github.com/JaKooLit 💫 #
+# based on 💫 https://github.com/JaKooLit 💫 #
 # Main default config
-
-
-# NOTE!!! : Packages and Fonts are configured in packages-&-fonts.nix
-
 
 { config, pkgs, host, username, options, lib, inputs, system, ...}: let
   
@@ -14,11 +10,11 @@
     ./hardware.nix
     ./users.nix
     ./packages-fonts.nix
-    ../../modules/nvidia-drivers.nix
-    ../../modules/nvidia-prime-drivers.nix
-    ../../modules/intel-drivers.nix
-    ../../modules/vm-guest-services.nix
-    ../../modules/local-hardware-clock.nix
+    ../../modules/drivers/nvidia-drivers.nix
+    ../../modules/drivers/nvidia-prime-drivers.nix
+    ../../modules/drivers/intel-drivers.nix
+    ../../modules/drivers/vm-guest-services.nix
+    ../../modules/drivers/local-hardware-clock.nix
     
   ];
   
@@ -34,12 +30,11 @@
       "modprobe.blacklist=sp5100_tco" #watchdog for AMD
       "modprobe.blacklist=iTCO_wdt" #watchdog for Intel
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-      "nvidia.NVreg_TemporaryFilePath=1" # needed for suspend possibly
+      "nvidia.NVreg_TemporaryFilePath=/var/tmp/" # needed for suspend possibly
  	  ];
 
     # This is for OBS Virtual Cam Support
     kernelModules = [ "v4l2loopback" ];
-    # extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
     
     initrd = { 
       availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
@@ -49,16 +44,16 @@
 
     resumeDevice = "";
     blacklistedKernelModules = lib.mkForce [
-	"nvidia"
-	"nvidia_modeset"
-	"nvidia_uvm"
-	"nvidia_drm"
+	    "nvidia"
+	    "nvidia_modeset"
+	    "nvidia_uvm"
+	    "nvidia_drm"
     ];
 
     # Needed For Some Steam Games
-    #kernel.sysctl = {
-    #  "vm.max_map_count" = 2147483642;
-    #};
+    kernel.sysctl = {
+      "vm.max_map_count" = 2147483642;
+    };
 
     ## BOOT LOADERS: NOT USE ONLY 1. either systemd or grub  
     # Bootloader SystemD
@@ -101,14 +96,7 @@
   networking.extraHosts = 
     ''
     '';
-  # networking.wireless.iwd = {
-  #   enable = true;
-  #   settings = {
-  #     IPv6.Enabled = true;
-  #     Settings.AutoConnect = true;
-  #   };
-  # };
-  # networking.networkmanager.wifi.backend = "iwd";
+  
   networking.hostName = "${host}";
   networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
 
@@ -154,18 +142,10 @@
   	  xwayland.enable = true;
       };
 
-	
 	  waybar.enable = true;
 	  hyprlock = {
 	  	enable = true;
-#		settings = {
-#			general = {ignore_empty_input = true;};
-#		background = {path = "home/michael/Pictures/wallpapers/astronaut.png";};
-#		};
 	  };
-	  # firefox = {
-	  # 	enable = true;
-	  # };
 	  git = {
 	      enable = true;
 	      lfs.enable = true;
@@ -177,12 +157,9 @@
     steam = {
       enable = true;
       gamescopeSession.enable = true;
-    #  remotePlay.openFirewall = true;
-    #  dedicatedServer.openFirewall = true;
     };
     
-    xwayland.enable = true;
-
+    xwayland.enable = false;
     dconf.enable = true;
     seahorse.enable = true;
     fuse.userAllowOther = true;
@@ -208,12 +185,7 @@
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-hyprland
-    ];
-    # configPackages = [
-    #  pkgs.xdg-desktop-portal-gtk
-    #  pkgs.xdg-desktop-portal-hyprland
-    #  pkgs.xdg-desktop-portal
-    # ];
+    ]; 
     config.hyprland = {
       "org.freedesktop.impl.portal.ScreenCast" = "hyprland";
     };

@@ -47,8 +47,8 @@
         libnotify
         openssl #required by Rainbow borders
         pciutils
-        neovim
-        vim
+        # neovim
+        # vim
         wget
         xdg-user-dirs
         xdg-utils
