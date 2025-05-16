@@ -1,5 +1,5 @@
 # based on 💫 https://github.com/JaKooLit 💫 #
-{ config, pkgs, username, lib, ... }:
+{ config, pkgs, username, lib, inputs, ... }:
 
 let
   inherit (import ./variables.nix) gitUsername;

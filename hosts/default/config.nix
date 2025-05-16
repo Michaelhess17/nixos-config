@@ -135,6 +135,7 @@
   }];
 
   programs = {
+    nvf.enable = true;
     zsh.enable = true;
 	  hyprland = {
       enable = true;

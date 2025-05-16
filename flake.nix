@@ -9,6 +9,7 @@
 	  distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
 	  nixos-hardware.url = "github:nixos/nixos-hardware/master";
 	  ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1
+      nvf.url = "github:notashelf/nvf";
   };
 
   outputs = 
@@ -36,6 +37,7 @@
             inherit host;
             };
           modules = [ 
+            inputs.nvf.nixosModules.default
             ./hosts/${host}/config.nix
             inputs.distro-grub-themes.nixosModules.${system}.default
             inputs.nixos-hardware.nixosModules.asus-rog-strix-g533zw
