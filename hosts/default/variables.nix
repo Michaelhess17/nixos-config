@@ -5,6 +5,9 @@
   # Git Configuration ( For Pulling Software Repos )
   gitUsername = "Michaelhess17";
   gitEmail = "michaelhess17@yahoo.com";
+  
+  # System
+  system = "x86_64-linux";
 
   # Hyprland Settings
   extraMonitorSettings = "";

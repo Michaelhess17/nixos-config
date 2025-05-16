@@ -5,11 +5,20 @@
   	
   inputs = {
   	nixpkgs.url = "nixpkgs/nixos-unstable";
-	  # hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
-	  distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+    home-manager = {
+      url = "github:/nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nvf.url = "github:notashelf/nvf";
+	  hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
 	  nixos-hardware.url = "github:nixos/nixos-hardware/master";
 	  ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1
-      nvf.url = "github:notashelf/nvf";
+    stylix.url = "github:danth/stylix";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nvix.url = "github:niksingh710/nvix";
   };
 
   outputs = 
@@ -37,9 +46,8 @@
             inherit host;
             };
           modules = [ 
-            inputs.nvf.nixosModules.default
             ./hosts/${host}/config.nix
-            inputs.distro-grub-themes.nixosModules.${system}.default
+            # inputs.distro-grub-themes.nixosModules.${system}.default
             inputs.nixos-hardware.nixosModules.asus-rog-strix-g533zw
           ]; 
         };

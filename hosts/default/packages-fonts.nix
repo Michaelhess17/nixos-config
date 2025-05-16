@@ -108,6 +108,7 @@
 	    # feh
 	    hugo
     	# (julia_110.withPackages ["CUDA" "Plots"])
+      inputs.nvix.packages.${pkgs.system}.core
     	libreoffice
     	librewolf
     	mosh
